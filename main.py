@@ -2,14 +2,9 @@ import requests
 import random
 from environs import Env
 
-env = Env()
-env.read_env()
-
-KEY = env.str("API_PIXABAY")
-
 
 def get_photo_url():
-    category = ["sportcars",
+    tag = ["sportcars",
             "animals",
             "space",
             "ships",
@@ -21,22 +16,34 @@ def get_photo_url():
             "russia",
             "bears"
             ]
-    random_category = random.choice(category)
+    random_tag = random.choice(tag)
     params = {
-        "key": KEY,
-        "category": random_category,
-        # "image_type": "photo",
-        # "editor_choice": "TRUE",
+        "key": key_pixabay,
+        "q": random_tag,
     }
     url = "https://pixabay.com/api/"
     random_photo = requests.get(url, params=params)
-    return random_photo.json()["hits"][1]["largeImageURL"]
+    return random_photo.json()["hits"][1]["fullHDURL"]
 
 
-file_name = "random picture.jpg"
-response = requests.get(get_photo_url())
-with open(file_name, "wb") as file:
-    file.write(response.content)
+def send_photo():
+    bot_url = f"https://api.telegram.org/bot{token_tg}"
+    parameters = {
+        "chat_id": "672168284",
+        "photo": get_photo_url()
+    }
+    r = requests.post(f"{bot_url}/sendPhoto", data=parameters)
+    return r
 
-print(get_photo_url())
 
+if __name__ == "__main__":
+    env = Env()
+    env.read_env()
+
+    key_pixabay = env.str("API_PIXABAY")
+    token_tg = env.str("TOKEN_TG")
+
+    try:
+        send_photo()
+    except KeyError:
+        print("Непредвиденная ошибка")
