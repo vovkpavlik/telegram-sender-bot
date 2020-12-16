@@ -28,6 +28,7 @@ def get_photo_url():
     url = "https://pixabay.com/api/"
     random_photos = requests.get(url, params=params)
     photo_urls = [pic["fullHDURL"] for pic in random_photos.json()["hits"]]
+    random_photos.raise_for_status()
     return random.choice(photo_urls)
 
 
@@ -51,5 +52,5 @@ if __name__ == "__main__":
 
     try:
         send_photo()
-    except KeyError:
+    except requests.exceptions.HTTPError:
         print("Непредвиденная ошибка")
