@@ -29,7 +29,7 @@ def get_photo_url():
 def send_photo():
     bot_url = f"https://api.telegram.org/bot{token_tg}"
     parameters = {
-        "chat_id": "672168284",
+        "chat_id": "CHAT_ID_TG",
         "photo": get_photo_url()
     }
     photo_bot = requests.post(f"{bot_url}/sendPhoto", data=parameters)
