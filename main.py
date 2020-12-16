@@ -23,6 +23,7 @@ def get_photo_url():
     }
     url = "https://pixabay.com/api/"
     random_photo = requests.get(url, params=params)
+    random_photo.raise_for_status()
     return random_photo.json()["hits"][1]["fullHDURL"]
 
 
@@ -33,6 +34,7 @@ def send_photo():
         "photo": get_photo_url()
     }
     photo_bot = requests.post(f"{bot_url}/sendPhoto", data=parameters)
+    photo_bot.raise_for_status()
     return photo_bot
 
 
