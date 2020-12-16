@@ -1,7 +1,11 @@
 import requests
 import random
 from environs import Env
+import pprint
+env = Env()
+env.read_env()
 
+key_pixabay = env.str("API_PIXABAY")
 
 def get_photo_url():
     tag = ["sportcars",
@@ -22,9 +26,9 @@ def get_photo_url():
         "q": random_tag,
     }
     url = "https://pixabay.com/api/"
-    random_photo = requests.get(url, params=params)
-    random_photo.raise_for_status()
-    return random_photo.json()["hits"][1]["fullHDURL"]
+    random_photos = requests.get(url, params=params)
+    photo_urls = [pic["fullHDURL"] for pic in random_photos.json()["hits"]]
+    return random.choice(photo_urls)
 
 
 def send_photo():
