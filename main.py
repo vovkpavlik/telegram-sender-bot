@@ -32,8 +32,8 @@ def send_photo():
         "chat_id": "672168284",
         "photo": get_photo_url()
     }
-    r = requests.post(f"{bot_url}/sendPhoto", data=parameters)
-    return r
+    photo_bot = requests.post(f"{bot_url}/sendPhoto", data=parameters)
+    return photo_bot
 
 
 if __name__ == "__main__":
